@@ -1,6 +1,6 @@
-CC = gcc
+CC = gcc -fopenmp
 CFLAGS = -Wall -Wextra -Wpedantic
-TARGET = my_program
+TARGET = bellman_ford.exe
 SRCDIR = src
 LIBDIR = libs
 OBJDIR = obj
@@ -48,5 +48,8 @@ clean:
 	del /Q $(TARGET) $(TARGET).exe 2> nul || cmd /c exit 0
 
 # Target to compile a specific source file
-graph_generator: $(OBJDIR)/graph_generator.o $(LIB_OBJS)
+# graph_generator: $(OBJDIR)/graph_generator.o $(LIB_OBJS)
+# 	$(CC) $(CFLAGS) $^ -o $(TARGET)
+
+main: $(OBJDIR)/main.o $(LIB_OBJS)
 	$(CC) $(CFLAGS) $^ -o $(TARGET)
