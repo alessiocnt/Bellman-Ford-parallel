@@ -7,6 +7,6 @@ struct Graph* createGraph(int V, int E) {
     struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
     graph->V = V;
     graph->E = E;
-    graph->edge = (struct Edge*)malloc(graph->E * sizeof(struct Edge));
+    graph->nodes = (struct Node*)malloc(graph->V * sizeof(struct Node));
     return graph;
 }
