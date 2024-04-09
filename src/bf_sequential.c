@@ -1,25 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include "graph.h"
 
-// A structure to represent a weighted edge in graph
-struct Edge {
-	int src, dest, weight;
-};
-// A structure to represent a connected, directed and weighted graph
-struct Graph {
-    int V, E;
-    struct Edge* edge;
-};
-// Creates a graph
-// V: number of vertices, E: number of edges
-struct Graph* createGraph(int V, int E) {
-    struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
-    graph->V = V;
-    graph->E = E;
-    graph->edge = (struct Edge*)malloc(graph->E * sizeof(struct Edge));
-    return graph;
-}
+// // A structure to represent a weighted edge in graph
+// struct Edge {
+// 	int src, dest, weight;
+// };
+// // A structure to represent a connected, directed and weighted graph
+// struct Graph {
+//     int V, E;
+//     struct Edge* edge;
+// };
+// // Creates a graph
+// // V: number of vertices, E: number of edges
+// struct Graph* createGraph(int V, int E) {
+//     struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
+//     graph->V = V;
+//     graph->E = E;
+//     graph->edge = (struct Edge*)malloc(graph->E * sizeof(struct Edge));
+//     return graph;
+// }
 
 void bellmanFord(struct Graph* graph, int src) {
     int V = graph->V;
