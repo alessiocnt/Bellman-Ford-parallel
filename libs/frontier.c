@@ -21,6 +21,14 @@ int isFull(struct Frontier* f) {
     return (f->rear + 1) % f->capacity == f->front;
 }
 
+int getLength(struct Frontier* f) {
+    if (isEmpty(f)) {
+        return 0;
+    } else {
+        return (f->capacity - f->front + f->rear + 1) % f->capacity;
+    }
+}
+
 void enqueue(struct Frontier* f, struct Node node) {
     #pragma omp critical 
     {
@@ -56,6 +64,15 @@ struct Node dequeue(struct Frontier* f) {
         }
     }
     return node;
+}
+
+void* swap(struct Frontier **f1, struct Frontier **f2) {
+    #pragma omp critical 
+    {
+        struct Frontier* temp = *f1;
+        *f1 = *f2;
+        *f2 = temp;
+    }
 }
 
 int main() {
@@ -100,14 +117,19 @@ int main() {
     graph->nodes[2].inEdges[1].src = &graph->nodes[1];
     graph->nodes[2].inEdges[1].dest = &graph->nodes[2];	
 
-    printf("Dequeued element: %d\n", dequeue(f).value); // Output: 1
+    printf("Dequeued element: %d\n", dequeue(f).value); // Output: -1
+    printf("%d\n", getLength(f));
     enqueue(f, graph->nodes[0]);
+    printf("%d\n", getLength(f));
     enqueue(f, graph->nodes[1]);
     enqueue(f, graph->nodes[2]);
 
     printf("Dequeued element: %d\n", dequeue(f).value); // Output: 1
+    printf("%d\n", getLength(f));
     printf("Dequeued element: %d\n", dequeue(f).value); // Output: 2
     printf("Dequeued element: %d\n", dequeue(f).value); // Output: 3
+    printf("%d\n", getLength(f));
+    printf("Dequeued element: %d\n", dequeue(f).value); // Output: -1
 
     return 0;
 }
