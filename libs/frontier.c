@@ -9,7 +9,7 @@ struct Frontier* createFrontier(int capacity) {
     frontier->capacity = capacity;
     frontier->front = -1;
     frontier->rear = -1;
-    frontier->nodes = (struct Edge*)malloc(capacity * sizeof(struct Edge));
+    frontier->nodes = (struct Node*)malloc(capacity * sizeof(struct Node));
     return frontier;
 }
 
@@ -21,35 +21,38 @@ int isFull(struct Frontier* f) {
     return (f->rear + 1) % f->capacity == f->front;
 }
 
-void enqueue(struct Frontier* f, struct Edge node) {
-    #pragma omp critical {
+void enqueue(struct Frontier* f, struct Node node) {
+    #pragma omp critical 
+    {
         if (isFull(f)) {
             printf("Frontier is full.\n");
-            return;
-        }
-        if (isEmpty(f)) {
-            f->front = 0;
-            f->rear = 0;
         } else {
-            f->rear = (f->rear + 1) % f->capacity;
+            if (isEmpty(f)) {
+                f->front = 0;
+                f->rear = 0;
+            } else {
+                f->rear = (f->rear + 1) % f->capacity;
+            }
+            f->nodes[f->rear] = node;
         }
-        f->nodes[f->rear] = node;
     }
 }
 
-struct Edge dequeue(struct Frontier* f) {
-    struct Edge node;
-    #pragma omp critical {
+struct Node dequeue(struct Frontier* f) {
+    struct Node node;
+    #pragma omp critical 
+    {
         if (isEmpty(f)) {
-            struct Edge nullEdge = {-1, -1, -1};
-            return nullEdge;
-        }
-        node = f->nodes[f->front];
-        if (f->front == f->rear) {
-            f->front = -1;
-            f->rear = -1;
+            struct Node nullNode = {-1, NULL, NULL};
+            node = nullNode;
         } else {
-            f->front = (f->front + 1) % f->capacity;
+            node = f->nodes[f->front];
+            if (f->front == f->rear) {
+                f->front = -1;
+                f->rear = -1;
+            } else {
+                f->front = (f->front + 1) % f->capacity;
+            }
         }
     }
     return node;
@@ -62,27 +65,49 @@ int main() {
 	int E = 3; // Number of edges in graph
 	struct Graph* graph = createGraph(V, E);
 
-	// add edge 0-1
-	graph->edge[0].src = 0;
-	graph->edge[0].dest = 1;
-	graph->edge[0].weight = -1;
-	// add edge 0-2
-	graph->edge[1].src = 0;
-	graph->edge[1].dest = 2;
-	graph->edge[1].weight = 4;
-	// add edge 1-2
-	graph->edge[2].src = 1;
-	graph->edge[2].dest = 2;
-	graph->edge[2].weight = 3;
+	// add node 0
+    graph->nodes[0].value = 0;
+    graph->nodes[0].inEdges = (struct Edge*)malloc(0 * sizeof(struct Edge));
+    graph->nodes[0].outEdges = (struct Edge*)malloc(2 * sizeof(struct Edge));
+    // add node 1
+    graph->nodes[1].value = 1;
+    graph->nodes[1].inEdges = (struct Edge*)malloc(1 * sizeof(struct Edge));
+    graph->nodes[1].outEdges = (struct Edge*)malloc(1 * sizeof(struct Edge));
+    // add node 2
+    graph->nodes[2].value = 2;
+    graph->nodes[2].inEdges = (struct Edge*)malloc(2 * sizeof(struct Edge));
+    graph->nodes[2].outEdges = (struct Edge*)malloc(0 * sizeof(struct Edge));
+    // populate edges
+    // add edge 0-1
+    graph->nodes[0].outEdges[0].weight = -1;
+    graph->nodes[0].outEdges[0].src = &graph->nodes[0];
+    graph->nodes[0].outEdges[0].dest = &graph->nodes[1];
+    graph->nodes[1].inEdges[0].weight = -1;
+    graph->nodes[1].inEdges[0].src = &graph->nodes[0];
+    graph->nodes[1].inEdges[0].dest = &graph->nodes[1];
+    // add edge 0-2
+    graph->nodes[0].outEdges[1].weight = 4;
+    graph->nodes[0].outEdges[1].src = &graph->nodes[0];
+    graph->nodes[0].outEdges[1].dest = &graph->nodes[2];
+    graph->nodes[2].inEdges[0].weight = 4;
+    graph->nodes[2].inEdges[0].src = &graph->nodes[0];
+    graph->nodes[2].inEdges[0].dest = &graph->nodes[2];
+    // add edge 1-2
+    graph->nodes[1].outEdges[0].weight = 2;
+    graph->nodes[1].outEdges[0].src = &graph->nodes[1];
+    graph->nodes[1].outEdges[0].dest = &graph->nodes[2];
+    graph->nodes[2].inEdges[1].weight = 2;
+    graph->nodes[2].inEdges[1].src = &graph->nodes[1];
+    graph->nodes[2].inEdges[1].dest = &graph->nodes[2];	
 
-    printf("Dequeued element: %d\n", dequeue(f).src); // Output: 1
-    enqueue(f, graph->edge[0]);
-    enqueue(f, graph->edge[1]);
-    enqueue(f, graph->edge[2]);
+    printf("Dequeued element: %d\n", dequeue(f).value); // Output: 1
+    enqueue(f, graph->nodes[0]);
+    enqueue(f, graph->nodes[1]);
+    enqueue(f, graph->nodes[2]);
 
-    printf("Dequeued element: %d\n", dequeue(f).src); // Output: 1
-    printf("Dequeued element: %d\n", dequeue(f).src); // Output: 2
-    printf("Dequeued element: %d\n", dequeue(f).src); // Output: 3
+    printf("Dequeued element: %d\n", dequeue(f).value); // Output: 1
+    printf("Dequeued element: %d\n", dequeue(f).value); // Output: 2
+    printf("Dequeued element: %d\n", dequeue(f).value); // Output: 3
 
     return 0;
 }
