@@ -5,6 +5,7 @@
         int value;
         // Lists of edges outgoing and incoming
         struct Edge* outEdges;
+        int outEdgesSize;
         struct Edge* inEdges;
     };    
 

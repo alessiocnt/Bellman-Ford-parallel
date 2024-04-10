@@ -56,6 +56,7 @@ struct Graph *importGraphFromFile(const char *filename) {
                     inCounter[j]++;
                 }
             }
+            graph->nodes[i].outEdgesSize = outCounter;
             outCounter = 0;
         }
         fclose(file);
