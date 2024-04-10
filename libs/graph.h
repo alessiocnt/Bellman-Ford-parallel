@@ -3,6 +3,7 @@
     // Structure to represent a node in graph
     struct Node {
         int value;
+        // Lists of edges outgoing and incoming
         struct Edge* outEdges;
         struct Edge* inEdges;
     };    
@@ -10,6 +11,7 @@
     // Structure to represent a weighted edge in graph
     struct Edge {
         int weight;
+        // Pointers to node
         struct Node* src;
         struct Node* dest;
     };
