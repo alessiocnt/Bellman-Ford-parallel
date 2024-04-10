@@ -31,7 +31,7 @@ struct Graph *importGraphFromFile(const char *filename) {
         struct CountEdge* counter = countEdges(V, file, inAdjLen, outAdjLen); 
         // Properly size the incoming and outgoing edges lists for each node in the graph
         for (int i = 0; i < V; i++) {
-            createEdges(graph, i, inAdjLen[i], outAdjLen[i]);
+            initializeNode(graph, i, inAdjLen[i], outAdjLen[i]);
         }
         // Populate the graph with nodes and edges
         fseek(file, 0, SEEK_SET);
