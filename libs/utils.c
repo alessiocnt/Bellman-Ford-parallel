@@ -14,7 +14,6 @@ void* countEdges(int V, FILE *file, int* inAdjLen, int* outAdjLen) {
             }
         }
     }
-    return;
 }
 
 // Import graph from a file
@@ -32,7 +31,7 @@ struct Graph *importGraphFromFile(const char *filename) {
         struct CountEdge* counter = countEdges(V, file, inAdjLen, outAdjLen); 
         // Properly size the incoming and outgoing edges lists for each node in the graph
         for (int i = 0; i < V; i++) {
-            createEdges(graph, i, inAdjLen[i], inAdjLen[i]);
+            createEdges(graph, i, inAdjLen[i], outAdjLen[i]);
         }
         // Populate the graph with nodes and edges
         fseek(file, 0, SEEK_SET);
