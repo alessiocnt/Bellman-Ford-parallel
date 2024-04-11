@@ -1,5 +1,5 @@
-CC = gcc -fopenmp
-CFLAGS = -Wall -Wextra -Wpedantic
+CC = gcc
+CFLAGS = -std=c99 -Wall -Wextra -Wpedantic -fopenmp
 TARGET = bellman_ford.exe
 SRCDIR = src
 LIBDIR = libs
