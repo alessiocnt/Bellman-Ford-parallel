@@ -14,6 +14,6 @@
     int getLength(struct Frontier* f);
     void enqueue(struct Frontier* frontier, struct Node* node);
     struct Node* dequeue(struct Frontier* frontier);
-    void* swap(struct Frontier **f1, struct Frontier **f2);
+    void swap(struct Frontier **f1, struct Frontier **f2);
     
 #endif
