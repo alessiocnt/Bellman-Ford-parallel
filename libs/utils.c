@@ -3,7 +3,7 @@
 #include "utils.h"
 #include "graph.h"
 
-void* countEdges(int V, FILE *file, int* inAdjLen, int* outAdjLen) {
+void countEdges(int V, FILE *file, int* inAdjLen, int* outAdjLen) {
     int w;
     for (int i = 0; i < V; i++) {
         for (int j = 0; j < V; j++) {
@@ -28,7 +28,7 @@ struct Graph *importGraphFromFile(const char *filename) {
         // Count in and out edges for each vertex
         int* inAdjLen = (int*)calloc(V, sizeof(int));
         int* outAdjLen = (int*)calloc(V, sizeof(int));
-        struct CountEdge* counter = countEdges(V, file, inAdjLen, outAdjLen); 
+        countEdges(V, file, inAdjLen, outAdjLen); 
         // Properly size the incoming and outgoing edges lists for each node in the graph
         for (int i = 0; i < V; i++) {
             initializeNode(graph, i, inAdjLen[i], outAdjLen[i]);
