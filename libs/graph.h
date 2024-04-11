@@ -1,5 +1,6 @@
 #ifndef GRAPH_H
 	#define GRAPH_H
+    #include <stddef.h>
     // Structure to represent a node in graph
     struct Node {
         int value;
@@ -8,7 +9,9 @@
         struct Edge* outEdges;
         int outEdgesSize;
         struct Edge* inEdges;
-    };    
+    };
+
+    extern struct Node nullNode;
 
     // Structure to represent a weighted edge in graph
     struct Edge {
@@ -24,4 +27,6 @@
     };
     // Creates a graph with V vertices and E edges
     struct Graph* createGraph(int V, int E);
+    // Initializes a node in the graph
+    void initializeNode(struct Graph* graph, int node, int inSize, int outSize);
 #endif
