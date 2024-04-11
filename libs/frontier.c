@@ -29,7 +29,7 @@ int getLength(struct Frontier* f) {
     }
 }
 
-void enqueue(struct Frontier* f, struct Node node) {
+void enqueue(struct Frontier* f, struct Node* node) {
     #pragma omp critical 
     {
         if (isFull(f)) {
@@ -41,20 +41,21 @@ void enqueue(struct Frontier* f, struct Node node) {
             } else {
                 f->rear = (f->rear + 1) % f->capacity;
             }
-            f->nodes[f->rear] = node;
+            f->nodes[f->rear] = *node;
         }
     }
 }
 
-struct Node dequeue(struct Frontier* f) {
-    struct Node node;
+struct Node* dequeue(struct Frontier* f) {
+    struct Node* ptrNode;
     #pragma omp critical 
     {
         if (isEmpty(f)) {
-            struct Node nullNode = {-1, NULL, NULL};
-            node = nullNode;
+            struct Node nullNode = {-1, -1, NULL, -1, NULL};
+            ptrNode = &nullNode;
         } else {
-            node = f->nodes[f->front];
+            struct Node node = f->nodes[f->front];
+            ptrNode = &node;
             if (f->front == f->rear) {
                 f->front = -1;
                 f->rear = -1;
@@ -63,7 +64,7 @@ struct Node dequeue(struct Frontier* f) {
             }
         }
     }
-    return node;
+    return ptrNode;
 }
 
 void* swap(struct Frontier **f1, struct Frontier **f2) {
@@ -117,19 +118,19 @@ int main() {
     graph->nodes[2].inEdges[1].src = &graph->nodes[1];
     graph->nodes[2].inEdges[1].dest = &graph->nodes[2];	
 
-    printf("Dequeued element: %d\n", dequeue(f).value); // Output: -1
+    printf("Dequeued element: %d\n", dequeue(f)->value); // Output: -1
     printf("%d\n", getLength(f));
-    enqueue(f, graph->nodes[0]);
+    enqueue(f, &graph->nodes[0]);
     printf("%d\n", getLength(f));
-    enqueue(f, graph->nodes[1]);
-    enqueue(f, graph->nodes[2]);
+    enqueue(f, &graph->nodes[1]);
+    enqueue(f, &graph->nodes[2]);
 
-    printf("Dequeued element: %d\n", dequeue(f).value); // Output: 1
+    printf("Dequeued element: %d\n", dequeue(f)->value); // Output: 1
     printf("%d\n", getLength(f));
-    printf("Dequeued element: %d\n", dequeue(f).value); // Output: 2
-    printf("Dequeued element: %d\n", dequeue(f).value); // Output: 3
+    printf("Dequeued element: %d\n", dequeue(f)->value); // Output: 2
+    printf("Dequeued element: %d\n", dequeue(f)->value); // Output: 3
     printf("%d\n", getLength(f));
-    printf("Dequeued element: %d\n", dequeue(f).value); // Output: -1
+    printf("Dequeued element: %d\n", dequeue(f)->value); // Output: -1
 
     return 0;
 }
