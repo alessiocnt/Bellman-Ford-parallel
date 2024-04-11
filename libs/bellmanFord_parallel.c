@@ -19,7 +19,6 @@ int bellmanFord_parallel(struct Graph* graph, int src) {
 
     // Relax all edges |V|-1 times
     for (int i=1; i<=V-1; i++) {
-
         #pragma omp parallel for
         for (int j=0; j<E; j++) {
             int u = graph->edge[j].src;

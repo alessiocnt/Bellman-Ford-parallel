@@ -5,7 +5,7 @@
 
 int main()
 {
-	struct Graph* graph = importGraphFromFile("./benchmark/graph_003_M.txt");
+	struct Graph* graph = importGraphFromFile("./benchmark/graph_001_XS.txt");
 	omp_set_num_threads(4);
 	bellmanFord_parallel(graph, 0);
 	return 0;
