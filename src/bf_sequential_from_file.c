@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <omp.h>
 
 // A structure to represent a weighted edge in graph
 struct Edge {
@@ -51,8 +52,8 @@ void bellmanFord(struct Graph* graph, int src) {
     }
     // Print distances
     printf("Vertex   Distance from Source\n");
-    for (int i = 0; i < V; i++)
-        printf("%d \t\t %d\n", i, dist[i]);
+    // for (int i = 0; i < V; i++)
+    //     printf("%d \t\t %d\n", i, dist[i]);
 }
 
 // Import graph from a file
@@ -69,7 +70,7 @@ struct Graph *importGraphFromFile(const char *filename) {
             for (int j = 0; j < V; j++) {
                 fscanf(file, "%d", &tmp);
 				if(tmp != INT_MAX){
-					printf("Edge %d: %d %d %d\n", count, i, j, tmp);
+					// printf("Edge %d: %d %d %d\n", count, i, j, tmp);
 					graph->edge[count].src = i;
 					graph->edge[count].dest = j;
 					graph->edge[count].weight = tmp;
@@ -85,9 +86,31 @@ struct Graph *importGraphFromFile(const char *filename) {
     }
 }
 
-int main()
+// int main()
+// {
+// 	struct Graph* graph = importGraphFromFile("../benchmark/graph_M_3.txt");
+// 	bellmanFord(graph, 0);
+// 	return 0;
+// }
+
+
+int main(int argc, char* argv[])
 {
-	struct Graph* graph = importGraphFromFile("../benchmark/graph_M_3.txt");
+	if (argc == 2) {
+		int threadNum = atoi(argv[1]);
+		omp_set_num_threads(threadNum);
+    } 
+	double istart = omp_get_wtime(); 
+	struct Graph* graph = importGraphFromFile("../benchmark/graph_005_XL.txt");
+	double ielapsed = omp_get_wtime() - istart;  
+	
+	double tstart = omp_get_wtime(); 
 	bellmanFord(graph, 0);
-	return 0;
+	double elapsed = omp_get_wtime() - tstart;  
+
+	printf("Executed concurrently with %d threads \n", omp_get_max_threads());
+    printf("Elapsed time %f\n", elapsed);
+	printf("Time for graph load %f\n", ielapsed);
+    return EXIT_SUCCESS;
+	// return 0;
 }
