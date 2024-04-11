@@ -13,6 +13,7 @@ struct Graph* createGraph(int V, int E) {
 
 void* initializeNode(struct Graph* graph, int node, int inSize, int outSize) {
     graph->nodes[node].value = node;
+    graph->nodes[node].iterationCount = 0;
     graph->nodes[node].inEdges = (struct Edge*)malloc(inSize * sizeof(struct Edge));
     graph->nodes[node].outEdges = (struct Edge*)malloc(outSize * sizeof(struct Edge));
 }

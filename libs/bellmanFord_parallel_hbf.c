@@ -18,7 +18,7 @@ int bellmanFord_parallel(struct Graph* graph, int src) {
     dist[src] = 0;
 
     struct Frontier* f1 = createFrontier(V); // Set capacity to the max number of vertex
-    enqueue(f1, struct Edge node);
+    enqueue(f1, struct Edge node);// TODO create src node
     struct Frontier* f2 = createFrontier(V); // Empty
 
     // currentIteration = 0 -> see paper
@@ -26,24 +26,19 @@ int bellmanFord_parallel(struct Graph* graph, int src) {
     while (!isEmpty(f1) && currentIteration<V+1) { // Early exit if frontier gets empty, otherwise |V|+1 iterations let us detect negative cycles
         #pragma omp parallel for
         for(int i=0; i<getLength(f1); i++) {
-            struct Node node = dequeue(f1);
-            int u = node.value;
+            struct Node source = dequeue(f1);
             #pragma omp parallel for
-            for (int j=0; j<node.outEdgesSize; j++) {
-                struct Node dest = node.outEdges[j].dest;
-                int v = dest.value;
-                int weight = node.outEdges[j].weight;
-                if (dist[u] != INT_MAX && dist[u] + weight < dist[v]) {
-                    #pragma omp critical
-                    dist[v] = dist[u] + weight;
-                    enqueue(f2, dest);
+            for (int j=0; j<source.outEdgesSize; j++) {
+                struct Node dest = source.outEdges[j].dest;
+                if (dest.itererationCount != currentIteration){ // Insert node only once in the frontier
+                    relax(source, dest);
                 }
             }
         }
         swap(&f1, &f2);
         currentIteration++;
     }
-
+    // Print distances or detect negative weight cycle
     if (currentIteration == V+1) {
         printf("Graph contains negative weight cycle\n");
         return -1;
@@ -53,5 +48,16 @@ int bellmanFord_parallel(struct Graph* graph, int src) {
         for (int i = 0; i < V; i++)
             printf("%d \t\t %d\n", i, dist[i]);
         return 0;
+    }
+}
+
+void* relax(struct Node *source, struct Node *dest) {
+    int u = source.value;
+    int v = dest.value;
+    int weight = source.outEdges[j].weight;
+    if (dist[u] != INT_MAX && dist[u] + weight < dist[v]) {
+        #pragma omp critical
+        dist[v] = dist[u] + weight;
+        enqueue(f2, dest);
     }
 }

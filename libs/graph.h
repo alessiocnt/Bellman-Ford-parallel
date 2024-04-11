@@ -3,6 +3,7 @@
     // Structure to represent a node in graph
     struct Node {
         int value;
+        int iterationCount;
         // Lists of edges outgoing and incoming
         struct Edge* outEdges;
         int outEdgesSize;
