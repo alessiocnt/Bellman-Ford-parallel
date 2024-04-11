@@ -14,16 +14,15 @@
 
 int main(int argc, char* argv[])
 {
-	float tstart, elapsed;
 	if (argc == 2) {
 		int threadNum = atoi(argv[1]);
 		omp_set_num_threads(threadNum);
     } 
-	struct Graph* graph = importGraphFromFile("./benchmark/graph_003_M.txt");
+	struct Graph* graph = importGraphFromFile("./benchmark/graph_005_XL.txt");
 	
-	tstart = omp_get_wtime();
+	double tstart = omp_get_wtime(); 
 	bellmanFord_parallel_hbf(graph, 0);
-	elapsed = omp_get_wtime() - tstart;  
+	double elapsed = omp_get_wtime() - tstart;  
 
 	printf("Executed concurrently with %d threads \n", omp_get_max_threads());
     printf("Elapsed time %f\n", elapsed);
