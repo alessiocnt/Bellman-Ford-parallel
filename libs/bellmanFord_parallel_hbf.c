@@ -18,7 +18,7 @@ int bellmanFord_parallel(struct Graph* graph, int src) {
     dist[src] = 0;
 
     struct Frontier* f1 = createFrontier(V); // Set capacity to the max number of vertex
-    enqueue(f1, struct Edge node);// TODO create src node
+    enqueue(f1, graph->nodes[src]);
     struct Frontier* f2 = createFrontier(V); // Empty
 
     // currentIteration = 0 -> see paper
