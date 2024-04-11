@@ -22,7 +22,8 @@ int bellmanFord_parallel(struct Graph* graph, int src) {
     struct Frontier* f2 = createFrontier(V); // Empty
 
     // currentIteration = 0 -> see paper
-    while !isEmpty(f1) { // or frontiera > V per cicli negativi
+    currentIteration = 0;
+    while (!isEmpty(f1) && currentIteration<V+1) { // Early exit if frontier gets empty, otherwise |V|+1 iterations let us detect negative cycles
         #pragma omp parallel for
         for(int i=0; i<getLength(f1); i++) {
             struct Node node = dequeue(f1);
@@ -40,40 +41,13 @@ int bellmanFord_parallel(struct Graph* graph, int src) {
             }
         }
         swap(&f1, &f2);
+        currentIteration++;
     }
 
-    // Relax all edges |V|-1 times
-    for (int i=1; i<=V-1; i++) {
-
-        #pragma omp parallel for
-        for (int j=0; j<E; j++) {
-            int u = graph->edge[j].src;
-            int v = graph->edge[j].dest;
-            int weight = graph->edge[j].weight;
-            if (dist[u] != INT_MAX && dist[u] + weight < dist[v])
-                #pragma omp critical
-                dist[v] = dist[u] + weight;
-        }
-    }
-    // Check for negative-weight cycles
-    int result = 0;
-    #pragma omp parallel for
-    for (int i=0; i<E; i++) {
-        int u = graph->edge[i].src;
-        int v = graph->edge[i].dest;
-        int weight = graph->edge[i].weight;
-        if (dist[u] != INT_MAX && dist[u] + weight < dist[v]) {
-            #pragma omp critical
-            {
-                result = -1;
-            }
-        }
-    }
-    if (result == -1){
+    if (currentIteration == V+1) {
         printf("Graph contains negative weight cycle\n");
         return -1;
-    } 
-    else {
+    } else {
         // Print distances
         printf("Vertex   Distance from Source\n");
         for (int i = 0; i < V; i++)
