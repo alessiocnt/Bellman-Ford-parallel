@@ -53,9 +53,10 @@ int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
         return -1;
     } else {
         // Print distances
-        printf("Vertex   Distance from Source\n");
-        for (int i = 0; i < V; i++)
-            printf("%d \t\t %d\n", i, dist[i]);
+        // printf("Vertex   Distance from Source\n");
+        // for (int i = 0; i < V; i++)
+        //     printf("%d \t\t %d\n", i, dist[i]);
+        printf("Success\n");
         return 0;
     }
 }
