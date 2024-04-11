@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <omp.h>
-#include "bellmanFord.h"
 #include "graph.h"
+#include "bellmanFord.h"
+#include "frontier.h"
 #include "utils.h"
 
 int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
@@ -18,28 +19,28 @@ int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
     dist[src] = 0;
 
     struct Frontier* f1 = createFrontier(V); // Set capacity to the max number of vertex
-    enqueue(f1, graph->nodes[src]);
+    enqueue(f1, &graph->nodes[src]);
     struct Frontier* f2 = createFrontier(V); // Empty
 
     // currentIteration = 0 -> see paper
-    currentIteration = 0;
+    int currentIteration = 0;
     while (!isEmpty(f1) && currentIteration<V+1) { // Early exit if frontier gets empty, otherwise |V|+1 iterations let us detect negative cycles
         #pragma omp parallel for
         for(int i=0; i<getLength(f1); i++) {
-            struct Node* source = dequeue(f1);
+            struct Node *source = dequeue(f1);
             #pragma omp parallel for
-            for (int j=0; j<source.outEdgesSize; j++) {
-                struct Node* dest = source.outEdges[j].dest;
-                if (dest.itererationCount != currentIteration){ // Insert node only once in the frontier
+            for (int j=0; j<source->outEdgesSize; j++) {
+                struct Node *dest = source->outEdges[j].dest;
+                if (dest->iterationCount != currentIteration){ // Insert node only once in the frontier
                     // Relax operation
-                    int u = source.value;
-                    int v = dest.value;
-                    int weight = source.outEdges[j].weight;
+                    int u = source->value;
+                    int v = dest->value;
+                    int weight = source->outEdges[j].weight;
                     if (dist[u] != INT_MAX && dist[u] + weight < dist[v]) {
                         #pragma omp critical
                         dist[v] = dist[u] + weight;
                         enqueue(f2, dest);
-                        dest.iterationCount = currentIteration;
+                        dest->iterationCount = currentIteration;
                     }
                 }
             }
