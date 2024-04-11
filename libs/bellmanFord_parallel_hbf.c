@@ -6,7 +6,7 @@
 #include "graph.h"
 #include "utils.h"
 
-int bellmanFord_parallel(struct Graph* graph, int src) {
+int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
     int V = graph->V;
     int E = graph->E;
     int* dist = (int*)malloc(V * sizeof(int));
