@@ -22,9 +22,8 @@ int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
     enqueue(f1, &graph->nodes[src]);
     struct Frontier* f2 = createFrontier(V); // Empty
 
-    // currentIteration = 0 -> see paper
-    int currentIteration = 0;
-    while (!isEmpty(f1) && currentIteration<V+1) { // Early exit if frontier gets empty, otherwise |V|+1 iterations let us detect negative cycles
+    int currentIteration = 1;
+    while (!isEmpty(f1) && currentIteration<(V+1)) { // Early exit if frontier gets empty, otherwise |V|+1 iterations let us detect negative cycles
         #pragma omp parallel for
         for(int i=0; i<getLength(f1); i++) {
             struct Node *source = dequeue(f1);
