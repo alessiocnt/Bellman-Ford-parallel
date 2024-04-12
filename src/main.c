@@ -1,7 +1,7 @@
 /****************************************************************************
 *
 * Run with:
-* ./bellman_ford filename n_threads
+* ./bellman_ford filename
 *
 ****************************************************************************/
 
@@ -38,7 +38,6 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 	char *path = getFilename(argv[1]);
-	// char *path = "./benchmark/graph_001_XS.txt";
 	// Compute threads availability and the series to test 
 	int availableThreads = omp_get_max_threads();
     int* threadSeries;
@@ -72,26 +71,3 @@ int main(int argc, char* argv[]) {
 	freeGraph(graph);
     return EXIT_SUCCESS;
 }
-
-
-
-// int main(int argc, char* argv[])
-// {
-// 	if (argc == 2) {
-// 		int threadNum = atoi(argv[1]);
-// 		omp_set_num_threads(threadNum);
-//     } 
-// 	double istart = omp_get_wtime(); 
-// 	struct Graph* graph = importGraphFromFile("./benchmark/graph_005_XL.txt");
-// 	double ielapsed = omp_get_wtime() - istart;  
-	
-// 	double tstart = omp_get_wtime(); 
-// 	bellmanFord_parallel_hbf(graph, 0);
-// 	double elapsed = omp_get_wtime() - tstart;  
-
-// 	printf("Executed concurrently with %d threads \n", omp_get_max_threads());
-//     printf("Elapsed time %f\n", elapsed);
-// 	printf("Time for graph load %f\n", ielapsed);
-//     return EXIT_SUCCESS;
-// 	// return 0;
-// }
