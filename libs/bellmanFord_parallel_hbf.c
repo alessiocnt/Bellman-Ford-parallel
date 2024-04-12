@@ -11,6 +11,7 @@ int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
     int V = graph->V;
     int E = graph->E;
     int* dist = (int*)malloc(V * sizeof(int));
+    int* accessCounter = (int*)calloc(V, sizeof(int));
     // Initialize distances from src to all other vertices as infinite
     #pragma omp parallel for 
     for (int i=0; i<V; i++) {
@@ -30,7 +31,8 @@ int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
             #pragma omp parallel for
             for (int j=0; j<source->outEdgesSize; j++) {
                 struct Node *dest = source->outEdges[j].dest;
-                if (dest->iterationCount != currentIteration){ // Insert node only once in the frontier
+                if (accessCounter[dest->value] != currentIteration){ // Insert node only once in the frontier
+                // if (dest->iterationCount != currentIteration){ // Insert node only once in the frontier
                     // Relax operation
                     int u = source->value;
                     int v = dest->value;
@@ -39,7 +41,8 @@ int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
                         #pragma omp critical
                         dist[v] = dist[u] + weight;
                         enqueue(f2, dest);
-                        dest->iterationCount = currentIteration;
+                        // dest->iterationCount = currentIteration;
+                        accessCounter[dest->value] = currentIteration;
                     }
                 }
             }

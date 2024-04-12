@@ -13,7 +13,6 @@ struct Graph* createGraph(int V, int E) {
 // Initializes a node in the graph
 void initializeNode(struct Graph* graph, int node, int outSize) {
     graph->nodes[node].value = node;
-    graph->nodes[node].iterationCount = 0;
     graph->nodes[node].outEdges = (struct Edge*)malloc(outSize * sizeof(struct Edge));
 }
 // Frees the memory allocated for the graph
@@ -26,4 +25,4 @@ void freeGraph(struct Graph* graph) {
     free(graph);
 }
 
-struct Node nullNode = {-1, -1, NULL, -1};
+struct Node nullNode = {-1, NULL, -1};
