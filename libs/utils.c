@@ -58,6 +58,32 @@ struct Graph *importGraphFromFile(const char *filename) {
         return NULL;
     }
 }
+
+// Computes a series of threads to be used in parallel computation
+// Returns the size of the series and modifies the pointer to the series
+int computeThreadSeries(int N, int** series) {
+    int size = 1;
+    int val = 1;
+    while (val <= N){
+        val *= 2;
+        size++;
+    }
+    if (N%2 != 0){
+        size++;
+    }
+    *series = (int*)malloc(size * sizeof(int));
+    if (*series == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
+    int value = 1;
+    for (int i = 0; i < size; i++) {
+        (*series)[i] = value;
+        value *= 2;
+    }
+    return size;
+}
+
 // TODO
 // Export graph to a file
 void printGraphToFile(int **matrix, int V, int E, const char *filename) {

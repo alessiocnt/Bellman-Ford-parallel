@@ -3,4 +3,5 @@
     # define INIT 0
     struct Graph *importGraphFromFile(const char *filename);
     void printGraphToFile(int **matrix, int V, int E, const char *filename);
+    int computeThreadSeries(int N, int** series);
 #endif
