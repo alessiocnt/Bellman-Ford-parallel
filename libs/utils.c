@@ -3,14 +3,13 @@
 #include "utils.h"
 #include "graph.h"
 
-void countEdges(int V, FILE *file, int* inAdjLen, int* outAdjLen) {
+void countEdges(int V, FILE *file, int* outAdjLen) {
     int w;
     for (int i = 0; i < V; i++) {
         for (int j = 0; j < V; j++) {
             fscanf(file, "%d", &w);
             if(w != INIT){
                 outAdjLen[i]++;
-                inAdjLen[j]++;
             }
         }
     }
@@ -25,20 +24,18 @@ struct Graph *importGraphFromFile(const char *filename) {
         fscanf(file, "%d", &E);
         // Create and size the graph
         struct Graph* graph = createGraph(V, E); // Create graph with V vertices and E edges
-        // Count in and out edges for each vertex
-        int* inAdjLen = (int*)calloc(V, sizeof(int));
+        // Count outcoming edges for each vertex
         int* outAdjLen = (int*)calloc(V, sizeof(int));
-        countEdges(V, file, inAdjLen, outAdjLen); 
+        countEdges(V, file, outAdjLen); 
         // Properly size the incoming and outgoing edges lists for each node in the graph
         for (int i = 0; i < V; i++) {
-            initializeNode(graph, i, inAdjLen[i], outAdjLen[i]);
+            initializeNode(graph, i, outAdjLen[i]);
         }
         // Populate the graph with nodes and edges
         fseek(file, 0, SEEK_SET);
         fscanf(file, "%d", &V); // Skip
         fscanf(file, "%d", &E); // Skip
         int outCounter = 0;
-        int* inCounter = (int *)calloc(V, sizeof(int));
         int w;
         for (int i = 0; i < V; i++) {
             for (int j = 0; j < V; j++) {
@@ -48,12 +45,7 @@ struct Graph *importGraphFromFile(const char *filename) {
                     graph->nodes[i].outEdges[outCounter].weight = w;
                     graph->nodes[i].outEdges[outCounter].src = &graph->nodes[i];
                     graph->nodes[i].outEdges[outCounter].dest = &graph->nodes[j];
-                    // Populate the list of edges incoming to j from i
-                    graph->nodes[j].inEdges[inCounter[j]].weight = w;
-                    graph->nodes[j].inEdges[inCounter[j]].src = &graph->nodes[i];
-                    graph->nodes[j].inEdges[inCounter[j]].dest = &graph->nodes[j];
                     outCounter++;
-                    inCounter[j]++;
                 }
             }
             graph->nodes[i].outEdgesSize = outCounter;

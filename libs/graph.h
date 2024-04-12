@@ -8,7 +8,6 @@
         // Lists of edges outgoing and incoming
         struct Edge* outEdges;
         int outEdgesSize;
-        struct Edge* inEdges;
     };
 
     extern struct Node nullNode;
@@ -28,5 +27,5 @@
     // Creates a graph with V vertices and E edges
     struct Graph* createGraph(int V, int E);
     // Initializes a node in the graph
-    void initializeNode(struct Graph* graph, int node, int inSize, int outSize);
+    void initializeNode(struct Graph* graph, int node, int outSize);
 #endif
