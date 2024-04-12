@@ -28,4 +28,6 @@
     struct Graph* createGraph(int V, int E);
     // Initializes a node in the graph
     void initializeNode(struct Graph* graph, int node, int outSize);
+    // Frees the memory allocated for the graph
+    void freeGraph(struct Graph* graph);
 #endif

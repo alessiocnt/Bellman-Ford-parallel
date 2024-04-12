@@ -47,6 +47,8 @@ int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
         swap(&f1, &f2);
         currentIteration++;
     }
+    free(f1);
+    free(f2);
     // Print distances or detect negative weight cycle
     if (currentIteration == V+1) {
         printf("Graph contains negative weight cycle\n");
