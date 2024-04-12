@@ -64,7 +64,7 @@ struct Graph *importGraphFromFile(const char *filename) {
 int computeThreadSeries(int N, int** series) {
     int size = 1;
     int val = 1;
-    while (val <= N){
+    while (val <= (N*2)){
         val *= 2;
         size++;
     }
