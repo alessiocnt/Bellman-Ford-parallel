@@ -7,6 +7,13 @@
 #include "frontier.h"
 #include "utils.h"
 
+void freeResourches(int* dist, int* accessCounter, struct Frontier* f1, struct Frontier* f2) {
+    free(dist);
+    free(accessCounter);
+    free(f1);
+    free(f2);
+}
+
 int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
     int V = graph->V;
     int E = graph->E;
@@ -50,18 +57,18 @@ int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
         swap(&f1, &f2);
         currentIteration++;
     }
-    free(f1);
-    free(f2);
     // Print distances or detect negative weight cycle
     if (currentIteration == V+1) {
         printf("Graph contains negative weight cycle\n");
+        freeResourches(dist, accessCounter, f1, f2);
         return -1;
     } else {
         // Print distances
-        printf("Vertex   Distance from Source\n");
-        for (int i = 0; i < V; i++)
-            printf("%d \t\t %d\n", i, dist[i]);
-        printf("Success\n");
+        // printf("Vertex   Distance from Source\n");
+        // for (int i = 0; i < V; i++)
+        //     printf("%d \t\t %d\n", i, dist[i]);
+        // printf("Success\n");
+        freeResourches(dist, accessCounter, f1, f2);
         return 0;
     }
 }
