@@ -1,6 +1,6 @@
 #ifndef BELLMANFORD_H
 	#define BELLMANFORD_H
 	#include "graph.h"
-    // Bellman Ford algorithm, returns 0 if a solution is given, -1 if there is a negative cycle
-	int bellmanFord(struct Graph* graph, int src);
+    __global__ void bellmanFord(Graph *d_graph, int *d_dist);
+	__global__ void checkNegativeWeightCycles(Graph *d_graph, int *d_dist, int *d_isNegativeCycle);
 #endif
