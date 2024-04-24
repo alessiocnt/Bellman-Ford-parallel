@@ -4,15 +4,13 @@
 #include "graph.h"
 #include "utils.h"
 
-int main()
-{
-    printf("MAIN\n");
+int main() {
 	struct Graph *h_graph, *d_graph;
     int h_isNegativeCycle = 0;
     int *h_dist, *d_dist, *d_isNegativeCycle;
     // Host structures
     printf("Create graph...\n");
-    h_graph = importGraphFromFile("./graph_test.txt");
+    h_graph = importGraphFromFile("./benchmark/graph_test.txt");
     int V = h_graph->V;
     int E = h_graph->E;
     printf("Graph imported\n");
