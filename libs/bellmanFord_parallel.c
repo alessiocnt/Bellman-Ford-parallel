@@ -45,13 +45,15 @@ int bellmanFord_parallel(struct Graph* graph, int src) {
     }
     if (result == -1){
         printf("Graph contains negative weight cycle\n");
+        free(dist);
         return -1;
     } 
     else {
         // Print distances
-        printf("Vertex   Distance from Source\n");
-        for (int i = 0; i < V; i++)
-            printf("%d \t\t %d\n", i, dist[i]);
+        // printf("Vertex   Distance from Source\n");
+        // for (int i = 0; i < V; i++)
+        //     printf("%d \t\t %d\n", i, dist[i]);
+        free(dist);
         return 0;
     }
 }
