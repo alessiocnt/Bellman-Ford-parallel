@@ -16,7 +16,7 @@ void freeResourches(int* dist, int* accessCounter, struct Frontier* f1, struct F
 
 int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
     int V = graph->V;
-    int E = graph->E;
+    // int E = graph->E;
     int* dist = (int*)malloc(V * sizeof(int));
     int* accessCounter = (int*)calloc(V, sizeof(int));
     // Initialize distances from src to all other vertices as infinite
