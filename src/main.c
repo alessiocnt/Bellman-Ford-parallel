@@ -33,13 +33,13 @@ char* getFilename(char *filename) {
 }
 
 int main(int argc, char* argv[]) {
-	const char** file_names;
+	char** file_names;
 	if (argc == 2) {
-		file_names = (const char**)malloc(2 * sizeof(const char*));
+		file_names = (char**)malloc(2 * sizeof(const char*));
 		file_names[0] = argv[1];
 		file_names[1] = NULL; // Mark the end of the array
 	} else {
-		file_names = (const char**)malloc(4 * sizeof(const char*));
+		file_names = (char**)malloc(4 * sizeof(const char*));
         file_names[0] = "graph_test.txt";
         file_names[1] = "graph_XS.txt";
         file_names[2] = "graph_S.txt";
