@@ -86,7 +86,7 @@ int computeThreadSeries(int N, int** series) {
 
 // TODO
 // Export graph to a file
-void printGraphToFile(int **matrix, int V, int E, const char *filename) {
+void printGraphToFile(int **matrix, int V, int E, char *filename) {
     FILE *file = fopen(filename, "w");
     if (file != NULL) {
         fprintf(file, "%d\n", V);
