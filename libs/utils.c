@@ -33,6 +33,7 @@ struct Graph *importGraphFromFile(const char *filename) {
     }
 }
 
+// TODO: Check
 // Export graph to a file
 void printGraphToFile(int **matrix, int V, int E, const char *filename) {
     FILE *file = fopen(filename, "w");

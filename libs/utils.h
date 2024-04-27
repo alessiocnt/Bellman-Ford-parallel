@@ -1,6 +1,5 @@
 #ifndef UTILS_H
 	#define UTILS_H
-
     # define INIT 0     // INT_MAX
     
     struct Graph *importGraphFromFile(const char *filename);
