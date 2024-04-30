@@ -16,7 +16,7 @@ void freeResourches(int* dist, int* accessCounter, struct Frontier* f1, struct F
 
 int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
     int V = graph->V;
-    // int E = graph->E;
+    int E = graph->E;
     int* dist = (int*)malloc(V * sizeof(int));
     int* accessCounter = (int*)calloc(V, sizeof(int));
     // Initialize distances from src to all other vertices as infinite
@@ -26,9 +26,9 @@ int bellmanFord_parallel_hbf(struct Graph* graph, int src) {
     }
     dist[src] = 0;
 
-    struct Frontier* f1 = createFrontier(V); // Set capacity to the max number of vertex
+    struct Frontier* f1 = createFrontier(E); // Set capacity to the max number of edges
     enqueue(f1, &graph->nodes[src]);
-    struct Frontier* f2 = createFrontier(V); // Empty
+    struct Frontier* f2 = createFrontier(E); // Empty
 
     int currentIteration = 1;
     while (!isEmpty(f1) && currentIteration<(V+1)) { // Early exit if frontier gets empty, otherwise |V|+1 iterations let us detect negative cycles
