@@ -1,0 +1,12 @@
+#!/bin/bash
+#SBATCH --job-name=nomejob
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=alessio.conti3@unibo.it
+#SBATCH --time=01:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --output=projectoutput
+#SBATCH --gres=gpu:1
+
+nvcc no_cyc_loop.cu -o no_cyc_loop
+./no_cyc_loop
