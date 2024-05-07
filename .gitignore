@@ -31,6 +31,6 @@
 # Dependency directories
 bin/
 lib/
-benchmark/
+#benchmark/
 
 .vscode/
