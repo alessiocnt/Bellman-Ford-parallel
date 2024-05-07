@@ -39,13 +39,14 @@ int main(int argc, char* argv[]) {
 		file_names[0] = argv[1];
 		file_names[1] = NULL; // Mark the end of the array
 	} else {
-		file_names = (char**)malloc(4 * sizeof(const char*));
-        file_names[0] = "graph_test.txt";
-        file_names[1] = "graph_XS.txt";
-        file_names[2] = "graph_S.txt";
-        file_names[3] = NULL;
+		file_names = (char**)malloc(5 * sizeof(const char*)); 
+	file_names[0] = "graph_XS.txt"; 
+        file_names[1] = "graph_S.txt"; 
+	file_names[2] = "graph_M.txt"; 
+	file_names[3] = "graph_L.txt"; 
+        file_names[4] = NULL;
 	}
-
+	printf("\n ---- OpenMP Frontier ----\n");
     // Compute threads availability and the series to test 
 	int availableThreads = omp_get_max_threads();
     int* threadSeries;
