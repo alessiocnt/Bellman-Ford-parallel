@@ -8,7 +8,7 @@ The project is built for _Slurm architectures_, to run it simply run:
 ```
 sabtch project.sbatch
 ```
-
+## Running info
 The sbatch script will automatically run all the experiments with _graph_XS_. <br>
 To test other graphs changhe the file _project.sbatch_ accordingly with the desired graph name: <br>
 1. "graph_XS.txt"
@@ -18,7 +18,8 @@ To test other graphs changhe the file _project.sbatch_ accordingly with the desi
 
 If no input name is defined, all four input graph will be tested (it will take a while).
 
-File structure of the project: <br>
+**Extract** the _benchmark.zip_ folder. <br>
+Project file structure: <br>
 ```
 project
 │   README.md
