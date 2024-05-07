@@ -8,17 +8,9 @@
 
 #define ITERATIONS 5
 
-// int main()
-// {
-// 	struct Graph* graph = importGraphFromFile("./benchmark/graph_XS.txt");
-// 	omp_set_num_threads(4);
-// 	bellmanFord_parallel(graph, 0);
-// 	return 0;
-// }
-
 struct Graph* loadGraph(char *filename) {
 	printf("Loading graph %s ..\n", filename);
-	double istart = omp_get_wtime(); 
+	double istart = omp_get_wtime();
 	struct Graph* graph = importGraphFromFile(filename);
 	double ielapsed = omp_get_wtime() - istart;
 	printf("Time for graph load %f\n", ielapsed);
@@ -65,13 +57,14 @@ int main(int argc, char* argv[]) {
 		file_names[0] = argv[1];
 		file_names[1] = NULL; // Mark the end of the array
 	} else {
-		file_names = (char**)malloc(4 * sizeof(const char*));
-        file_names[0] = "graph_test.txt";
-        file_names[1] = "graph_XS.txt";
-        file_names[2] = "graph_S.txt";
-        file_names[3] = NULL;
+		file_names = (char**)malloc(5 * sizeof(const char*));
+        file_names[0] = "graph_XS.txt";
+        file_names[1] = "graph_S.txt";
+	file_names[2] = "graph_M.txt";
+	file_names[3] = "graph_L.txt";
+        file_names[4] = NULL;
 	}
-
+	printf("\n ---- OpenMP Base ----\n");
     // Compute threads availability and the series to test 
 	int availableThreads = omp_get_max_threads();
     int* threadSeries;
