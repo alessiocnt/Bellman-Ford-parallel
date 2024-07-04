@@ -11,10 +11,10 @@ sabtch project.sbatch
 ## Running info
 The sbatch script will automatically run all the experiments with _graph_XS_. <br>
 To test other graphs changhe the file _project.sbatch_ accordingly with the desired graph name: <br>
-1. "graph_XS.txt"
-2. "graph_S.txt"
-3. "graph_M.txt"
-4. "graph_L.txt"
+1. "graph_XS.txt" nodes: 250, edges: 1500
+2. "graph_S.txt" nodes: 1500, edges: 10k
+3. "graph_M.txt" nodes: 5k, edges: 200k
+4. "graph_L.txt" nodes: 10k, edges: 500k
 
 If no input name is defined, all four input graph will be tested (it will take a while).
 
